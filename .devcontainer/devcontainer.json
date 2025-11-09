@@ -2,7 +2,8 @@
     "portsAttributes": {
         "3000": {
             "label": "Application",
-            "onAutoForward": "notify"
+            "onAutoForward": "notify",
+            "visibility": "public"
         }
     },
     "forwardPorts": [
