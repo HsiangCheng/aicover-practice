@@ -1,0 +1,11 @@
+{
+    "portsAttributes": {
+        "3000": {
+            "label": "Application",
+            "onAutoForward": "notify"
+        }
+    },
+    "forwardPorts": [
+        3000
+    ]
+}
