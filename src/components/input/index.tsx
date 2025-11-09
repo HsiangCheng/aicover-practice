@@ -4,19 +4,43 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 
 export default function InputSection() {
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const handleGenerate = async () => {
-        if (!prompt.trim()) return;
+        if (!prompt.trim()) {
+            toast.error("请输入描述文字");
+            return;
+        }
 
         setIsLoading(true);
-        // 这里后续会调用AI生成API
-        setTimeout(() => {
+        try {
+            const response = await fetch('/api/gen-cover', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                toast.success("生成成功！");
+                // 这里可以更新页面显示新生成的图片
+                console.log('生成的封面:', result.data);
+            } else {
+                toast.error(result.error || "生成失败");
+            }
+        } catch (error) {
+            console.error('生成失败:', error);
+            toast.error("生成失败，请重试");
+        } finally {
             setIsLoading(false);
-        }, 2000);
+        }
     };
 
     return (
@@ -34,6 +58,7 @@ export default function InputSection() {
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 className="min-h-[100px]"
+                                disabled={isLoading}
                             />
                             <div className="flex justify-center">
                                 <Button
