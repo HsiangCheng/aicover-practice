@@ -2,13 +2,16 @@
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { AppContextProvider } from "@/contexts/AppContext";
 
 export default function ({ children }: { children: React.ReactNode }) {
     return (
-        <div className="w-screen min-h-screen">
-            <Header />
-            <main>{children}</main>
-            <Footer />
-        </div>
+        <AppContextProvider>
+            <div className="w-screen h-screen">
+                <Header />
+                <main>{children}</main>
+                <Footer />
+            </div>
+        </AppContextProvider>
     );
 }

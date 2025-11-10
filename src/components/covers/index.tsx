@@ -1,19 +1,23 @@
+"use client";
+
 import Image from "next/image";
+import { Cover } from "@/types";
+import { useAppContext } from "@/contexts/AppContext";
+import { mockCovers } from "@/data/mock-covers";
 
-interface Cover {
-    id: string;
-    img_url: string;
-    img_description: string;
-}
+  interface CoversProps {
+    cate: string;
+    showTab: boolean;
+  }
 
-export default function Covers({
-    covers,
-    cate = "latest"
-}: {
-    covers: Cover[],
-    cate?: string
-}) {
-    if (!covers || covers.length === 0) {
+export default function Covers({ cate, showTab }: CoversProps) {
+const { generatedCovers } = useAppContext();
+
+
+    // 显示生成的封面 + 模拟封面
+    const allCovers = cate === "generated" ? generatedCovers : [...generatedCovers, ...mockCovers];
+
+    if (!allCovers || allCovers.length === 0) {
         return (
             <section className="w-full py-12">
                 <div className="container px-4 md:px-6">
@@ -37,7 +41,7 @@ export default function Covers({
                     </h2>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {covers.map((cover) => (
+                    {allCovers.map((cover) => (
                         <div key={cover.id} className="group relative overflow-hidden rounded-lg">
                             <div className="aspect-[9/16] w-full overflow-hidden bg-gray-100">
                                 <Image

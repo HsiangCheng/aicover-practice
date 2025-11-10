@@ -4,7 +4,11 @@ export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
     try {
+        console.log("API被调用");
+
         const { prompt } = await request.json();
+
+        console.log("收到prompt:", prompt);
 
         if (!prompt) {
             return NextResponse.json(
@@ -19,10 +23,12 @@ export async function POST(request: NextRequest) {
             img_url: 'https://picsum.photos/1024/1792?random=' + Date.now(),
             img_description: prompt,
             status: 1,
+            created_at: new Date().toISOString(),
+            uuid: `cover_${Date.now()}`,
         };
 
         // 模拟处理时间
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         return NextResponse.json({
             success: true,
