@@ -1,3 +1,4 @@
+import { saveCover } from '@/models/cover';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'edge';
@@ -26,6 +27,10 @@ export async function POST(request: NextRequest) {
             created_at: new Date().toISOString(),
             uuid: `cover_${Date.now()}`,
         };
+
+
+        // 保存到"数据库"
+        const savedCover = await saveCover(mockResult);
 
         // 模拟处理时间
         await new Promise(resolve => setTimeout(resolve, 1000));
